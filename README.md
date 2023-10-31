@@ -1,6 +1,6 @@
 # New Relic NRUG Arrival Form
 
-An interactive form built with React to gather user's first name or their preferred online handle. The app ensures that users do not use any forbidden words in their input.
+This is an arrival form for NRUG Australia. Attendees can enter their first name (or anonymous handle of choice) and their arrival time and <inputname> will be displayed on an APM Summary page via [Change Tracking](https://docs.newrelic.com/docs/change-tracking/change-tracking-introduction/) as an interactive example of how to track external changes in context of Observability Telemetry in New Relic. 
 
 ## Prerequisites
 
