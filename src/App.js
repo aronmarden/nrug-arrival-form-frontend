@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+// import { Spa } from '@newrelic/browser-agent/features/spa';
+import { BrowserAgent } from '@newrelic/browser-agent/loaders/browser-agent'
+
+const options = {
+  info: {beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",licenseKey:"a4645a26d6",applicationID:"718362503",sa:1},
+  loader_config: {accountID:"1044047",trustKey:"1044047",agentID:"718362503",licenseKey:"a4645a26d6",applicationID:"718362503"}
+}
+new BrowserAgent(options)
+
 function App() {
   const [firstName, setFirstName] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
@@ -9,7 +18,7 @@ function App() {
 
   useEffect(() => {
     // Load the JSON file from the public folder
-    fetch('/forbiddenWords.json')
+    fetch('forbiddenWords.json')
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -28,16 +37,16 @@ function App() {
 
 const containsForbiddenWord = (input) => {
   const loweredInput = input.toLowerCase();
-  console.log(forbiddenWords);
-  console.log("Checking input:", loweredInput);
   return forbiddenWords.some(word => loweredInput.includes(word));
 };
 
 
   const handleSubmit = () => {
-    if (containsForbiddenWord(firstName)) {
+    window.newrelic.addPageAction('firstNameSubmit',{firstName});
+    if (containsForbiddenWord(firstName)) { 
       setResponseMessage("Your input contains forbidden words. Please refrain from using them.");
       setResponseType('text');
+      // window.newrelic.setCustomAttribute('firstName', firstName);
       return;
     }
 
@@ -115,7 +124,8 @@ const containsForbiddenWord = (input) => {
           placeholder="Enter your first name"
           style={{ padding: '10px', fontSize: '16px' }}
         />
-      </div>
+
+      </div>      
       <button onClick={handleSubmit} style={{ margin: '20px', padding: '10px' }}>Submit</button>
 
       <div style={{ margin: '0 auto', maxWidth: '70%' }}>
